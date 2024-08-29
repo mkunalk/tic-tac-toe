@@ -1,8 +1,8 @@
 
-export default function Square({value,onSquareClick}:{value:number,onSquareClick:()=>void})
+export default function Square({won,value,onSquareClick}:{won: boolean,value:number,onSquareClick:()=>void})
 {
 
     return (
-        <button className="square" onClick={onSquareClick}>{value}</button>
+        <button style={won?{backgroundColor:"blue"}:{}} onClick={onSquareClick}>{value}</button>
     )
 }

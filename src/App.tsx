@@ -25,8 +25,14 @@ function App() {
 
   const winner = calculateWinners(currentSquares);
   let status;
-  if(winner)
-    status = "Winner " + winner;
+  const won = Array(9).fill(false);
+  if(winner){
+    status = "Winner " + (xIsNext? "O":"X");
+    for(const i of winner){
+      won[i] = true;
+    }
+  }
+  
   else
     status = "Next turn " + (xIsNext? 'X':'O');
   
@@ -37,19 +43,19 @@ function App() {
       <div className='result'>{status}</div>
       <div>
         <div className='board-row'>
-          <Square value={currentSquares[0]} onSquareClick={()=>handleClick(0)}/>
-          <Square value={currentSquares[1]} onSquareClick={()=>handleClick(1)}/>
-          <Square value={currentSquares[2]} onSquareClick={()=>handleClick(2)}/>
+          <Square won={won[0]} value={currentSquares[0]} onSquareClick={()=>handleClick(0)}/>
+          <Square won={won[1]} value={currentSquares[1]} onSquareClick={()=>handleClick(1)}/>
+          <Square won={won[2]} value={currentSquares[2]} onSquareClick={()=>handleClick(2)}/>
         </div>
         <div className='board-row'>
-          <Square value={currentSquares[3]} onSquareClick={()=>handleClick(3)}/>
-          <Square value={currentSquares[4]} onSquareClick={()=>handleClick(4)}/>
-          <Square value={currentSquares[5]} onSquareClick={()=>handleClick(5)}/>
+          <Square won={won[3]} value={currentSquares[3]} onSquareClick={()=>handleClick(3)}/>
+          <Square won={won[4]} value={currentSquares[4]} onSquareClick={()=>handleClick(4)}/>
+          <Square won={won[5]} value={currentSquares[5]} onSquareClick={()=>handleClick(5)}/>
         </div>
         <div className='board-row'>
-          <Square value={currentSquares[6]} onSquareClick={()=>handleClick(6)}/>
-          <Square value={currentSquares[7]} onSquareClick={()=>handleClick(7)}/>
-          <Square value={currentSquares[8]} onSquareClick={()=>handleClick(8)}/>
+          <Square won={won[6]} value={currentSquares[6]} onSquareClick={()=>handleClick(6)}/>
+          <Square won={won[7]} value={currentSquares[7]} onSquareClick={()=>handleClick(7)}/>
+          <Square won={won[8]} value={currentSquares[8]} onSquareClick={()=>handleClick(8)}/>
         </div>
       </div>
       <div>
@@ -58,7 +64,7 @@ function App() {
             <button className='btn' onClick={()=>{
               if(index === 0)
                 setHistory([Array(9).fill(null)]);
-              setHistory(history.slice(0,index));
+              setHistory(history.slice(0,index+1));
             }}>Go to {index}</button>
           </li>
         })}
@@ -70,9 +76,9 @@ function App() {
 
 function calculateWinners(gamePositions:Array<string>){
 
-  if(gamePositions == null){
-    return null;
-  }
+  // if(gamePositions == null){
+  //   return null;
+  // }
 
   const lines = [
     [0,1,2],
@@ -82,12 +88,12 @@ function calculateWinners(gamePositions:Array<string>){
     [1,4,7],
     [2,5,8],
     [0,4,8],
-    [2.4,6]
+    [2,4,6]
   ];
   for(let i=0;i<lines.length;i++){
     const [a, b, c] = lines[i];
     if(gamePositions[a] && gamePositions[a] === gamePositions[b] && gamePositions[a] === gamePositions[c]){
-      return gamePositions[a];
+      return lines[i];
     }
   }
   return null;
