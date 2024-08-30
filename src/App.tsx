@@ -33,14 +33,19 @@ function App() {
     }
   }
   
-  else
-    status = "Next turn " + (xIsNext? 'X':'O');
+  else{
+    if(history.length === 10){
+      status = "Game Over: Its a Draw, Refresh to play"
+    }
+    else
+      status = "Next turn " + (xIsNext? 'X':'O');
+  }
   
 
   return (
     <>
     <div className='flex-container'>
-      <div className='result'>{status}</div>
+      <div style={{height:'100px',width:'100px',color:status[0]==='N'?'green':'red',position:'relative'}}>{status}</div>
       <div>
         <div className='board-row'>
           <Square won={won[0]} value={currentSquares[0]} onSquareClick={()=>handleClick(0)}/>
